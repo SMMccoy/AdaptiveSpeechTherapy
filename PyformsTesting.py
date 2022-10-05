@@ -23,11 +23,11 @@ class SimpleExample1(BaseWidget):
         #Definition of the forms fields
         self._answer = ControlText('Answer')
 
-        self.speedDecreaseButton = ControlButton("-")
+        self.speedDecreaseButton = ControlButton("<<")
 
         self.playButton = ControlButton("Play")
 
-        self.speedIncreaseButton = ControlButton("+")
+        self.speedIncreaseButton = ControlButton(">>")
 
         self._submitButton = ControlButton('Submit')
 
