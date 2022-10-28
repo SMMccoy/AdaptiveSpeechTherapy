@@ -27,7 +27,7 @@ class _Model:
         if not self.initialized:
             self.voiceRate = 150
             self.currentWordIndex = 0
-
+            self.word_list = word_list["index_of_words"]
     def __new__(cls):
         if cls.instance is None:
             cls.instance = object.__new__(cls)
@@ -42,7 +42,7 @@ class _Model:
         return return_bundle
 
     def get_current_word(self, bundle):
-        return word_list[self.currentWordIndex]
+        return self.word_list[self.currentWordIndex]
 
     def on_submit(self, submit):
         print("Submitted")
