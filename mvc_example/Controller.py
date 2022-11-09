@@ -1,7 +1,7 @@
 from pyvent.event.Module import *
 from pyvent.data.Module import *
-from mvc_example.WordList import word_list
-
+from WordList import word_list
+from binsTest import bins
 class Controller:
     instance = None
     model = None
@@ -27,7 +27,8 @@ class _Model:
         if not self.initialized:
             self.voiceRate = 150
             self.currentWordIndex = 0
-            self.word_list = word_list["index_of_words"]
+            self.currentBinIndex = 0
+
     def __new__(cls):
         if cls.instance is None:
             cls.instance = object.__new__(cls)
@@ -42,8 +43,12 @@ class _Model:
         return return_bundle
 
     def get_current_word(self, bundle):
-        return self.word_list[self.currentWordIndex]
-
+        try:
+            return bins[self.currentBinIndex][self.currentWordIndex][0]
+        except:
+            self.currentBinIndex += 1
+            self.currentWordIndex = 0
+            return bins[self.currentBinIndex][self.currentWordIndex][0]
     def on_submit(self, submit):
         print("Submitted")
         if submit.lower() == self.get_current_word(None).lower():
@@ -56,4 +61,3 @@ class _Model:
         else:
             print("REEEE")
             return False
-
