@@ -4,6 +4,7 @@ from pyforms.basewidget import BaseWidget
 from pyforms.controls import ControlText
 from pyforms.controls import ControlButton
 from pyvent.lua.Module import spawn
+from pyvent.lua.Module import *
 import pyttsx3
 
 
@@ -14,6 +15,7 @@ class View(BaseWidget):
     def __init__(self):
         if not self.initialized:
             super(View, self).__init__('Gui MVC Model')
+            self.controller.close.connect(self.close)
             self.voiceOutput = VoiceOutput(150, 0)
             self._answer = ControlText('Answer')
 
@@ -41,6 +43,9 @@ class View(BaseWidget):
 
     def before_close_event(self):
         self.controller.close.fire(None)
+
+    def on_close(self, bundle):
+        print("CLOSING")
 
     def on_submit(self, submit):
         print(self.controller.submitAnswer.invoke(submit))

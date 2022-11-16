@@ -1,3 +1,4 @@
+import pyvent.lua.Module
 from pyvent.example_patterns.Singleton import Singleton
 from perceptron_mvc_example.Controller import Controller
 import pyforms
@@ -8,8 +9,9 @@ from pyforms.controls import ControlSlider
 from pyvent.event.Module import BindableEvent
 from pyvent.data.Module import Bundle
 from perceptron_mvc_example.FTTS import FTTS
+from WordDefinition import get_word_def
 import playsound
-
+import time
 
 class View(BaseWidget):
     MAX_SIZE_X = 400
@@ -35,22 +37,35 @@ class View(BaseWidget):
         self.set_margin(self.MARGIN)
         self.setFixedSize(self.MAX_SIZE_X, self.MAX_SIZE_Y)
         self._submitButton = ControlButton('Submit', helptext="Submit your answer")
-        self.formset = ['_answer', ('playButton', 'speed_slider'), '_submitButton']
+        self.definition_button = ControlButton("Play word definition")
+        self.formset = ['_answer', ('playButton', 'definition_button', 'speed_slider'), '_submitButton']
         self.set_up_buttons()
         self.on_listen_to_word()
 
     def set_up_buttons(self):
         self._submitButton.value = lambda: self.on_submit(self._answer.value)
         self.playButton.value = self.on_listen_to_word
+        self.definition_button.value = self.on_listen_to_word_definition
+
+    def on_finish(self):
+        playsound.playsound("ding_sound_effect.mp3")
+        self.on_listen_to_word()
 
     def on_submit(self, answer):
         self._answer.value = ""
         bundle = self.CONTROLLER.submit_answer.invoke(answer)
         if bundle.get("result"):
             print("Correct")
+
         else:
             print("Failure")
-        self.on_listen_to_word()
+        pyvent.lua.Module.spawn(self.on_finish)
+
+    def on_listen_to_word_definition(self):
+        word = self.CONTROLLER.get_current_word.invoke(None)
+        speed = 200 * (self.speed_slider.value / 7)
+        print("saying definition for: ", word)
+        self.FTTS.say(get_word_def(word), speed)
 
     def on_listen_to_word(self):
         word = self.CONTROLLER.get_current_word.invoke(None)
