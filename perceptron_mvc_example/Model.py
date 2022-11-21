@@ -23,7 +23,7 @@ class Model(Singleton):
             self.choice = 0
             self.machine = Perceptron(26 * 18, .01, 1, 0)
             self.current_word = ""
-            self.level = 6
+            self.level = 5.5
             self.choose_next_word()
 
 

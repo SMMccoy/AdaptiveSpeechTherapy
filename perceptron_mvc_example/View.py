@@ -47,8 +47,14 @@ class View(BaseWidget):
         self.playButton.value = self.on_listen_to_word
         self.definition_button.value = self.on_listen_to_word_definition
 
-    def on_finish(self):
-        playsound.playsound("ding_sound_effect.mp3")
+    def on_finish_correct(self):
+        playsound.playsound("ding_sound_effect.mp3", False)
+        time.sleep(.75)
+        self.on_listen_to_word()
+
+    def on_finish_incorrect(self):
+        playsound.playsound("buzzer_sound_effect.mp3", False)
+        time.sleep(1.25)
         self.on_listen_to_word()
 
     def on_submit(self, answer):
@@ -56,10 +62,11 @@ class View(BaseWidget):
         bundle = self.CONTROLLER.submit_answer.invoke(answer)
         if bundle.get("result"):
             print("Correct")
-
+            pyvent.lua.Module.spawn(self.on_finish_correct)
         else:
             print("Failure")
-        pyvent.lua.Module.spawn(self.on_finish)
+            pyvent.lua.Module.spawn(self.on_finish_incorrect)
+
 
     def on_listen_to_word_definition(self):
         word = self.CONTROLLER.get_current_word.invoke(None)
