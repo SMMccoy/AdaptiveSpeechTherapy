@@ -10,7 +10,7 @@ from WordListHandler import get_words_in_level_range
 from WordListHandler import calculate_word_difficulty
 from WordListHandler import ban_word
 import random
-
+from ini_handler import ini
 
 class Model(Singleton):
     RANGE = .75
@@ -23,7 +23,8 @@ class Model(Singleton):
             self.choice = 0
             self.machine = Perceptron(26 * 18, .01, 1, 0)
             self.current_word = ""
-            self.level = 6.5
+            self.ini_class = ini()
+            self.level = self.ini_class.getLevel()
             self.choose_next_word()
 
 
@@ -78,5 +79,6 @@ class Model(Singleton):
         self.machine.learn(self.current_word, correct)
         self.choose_next_word()
         print("Level: ", self.level)
+        self.ini_class.setLevel(self.level)
         return_bundle.add("next_word", self.current_word)
         return return_bundle
