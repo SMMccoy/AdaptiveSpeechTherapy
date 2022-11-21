@@ -79,7 +79,8 @@ class View(BaseWidget):
         speed = 200 * (self.speed_slider.value / 7)
         print("saying: ", word)
         self.FTTS.say(word, speed)
-
+    def before_close_event(self):
+        self.CONTROLLER._MODEL.ini_class.endSession()
 
 if __name__ == "__main__":
     pyforms.start_app(View, geometry=(100, 100, 350, 150))
