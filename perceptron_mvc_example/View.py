@@ -41,8 +41,8 @@ class View(BaseWidget):
         self.set_margin(self.MARGIN)
         self.setFixedSize(self.MAX_SIZE_X, self.MAX_SIZE_Y)
         self._submitButton = ControlButton('Submit', helptext="Submit your answer")
-        self.definition_button = ControlButton("Play word definition")
-        self.formset = ['_answer', ('playButton', 'definition_button', 'speed_slider'), '_submitButton']
+        self.definition_button = ControlButton("Definition")
+        self.formset = ['_answer', ('playButton', 'definition_button'), 'speed_slider', '_submitButton']
         self.set_up_buttons()
         self.on_listen_to_word()
 
