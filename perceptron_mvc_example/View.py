@@ -13,6 +13,10 @@ from WordDefinition import get_word_def
 import playsound
 import time
 
+from pyforms import settings as formSettings
+
+formSettings.PYFORMS_STYLESHEET = 'style.css'
+
 class View(BaseWidget):
     MAX_SIZE_X = 400
     MAX_SIZE_Y = 200
@@ -26,13 +30,13 @@ class View(BaseWidget):
         super(View, self).__init__('Gui Perceptron MVC Model')
         self.FTTS = FTTS()
         self.speed_slider = ControlSlider(
-            'Speed',
+            '',
             default=self.SPEED_SLIDER_DEFAULT,
             minimum=self.SPEED_SLIDER_MINIMUM,
             maximum=self.SPEED_SLIDER_MAXIMUM,
             helptext="Change listening speed"
         )
-        self._answer = ControlText('Answer', helptext="Enter your answer here")
+        self._answer = ControlText('', helptext="Enter your answer here")
         self.playButton = ControlButton("Listen", helptext="Listen to word")
         self.set_margin(self.MARGIN)
         self.setFixedSize(self.MAX_SIZE_X, self.MAX_SIZE_Y)
