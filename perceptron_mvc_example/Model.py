@@ -21,6 +21,7 @@ class Model(Singleton):
         if not self.initialized:
             super().__init__()
             self.choice = 0
+            self.trys = 3
             self.machine = Perceptron(26 * 18, .01, 1, 0)
             self.current_word = ""
             self.ini_class = ini()
@@ -67,12 +68,15 @@ class Model(Singleton):
         return_bundle = Bundle()
         correct = self.current_word.lower() == str.lower(answer)
         return_bundle.add("result", correct)
-
         if correct:
+            self.trys = 3
             delta = math.pow(calculate_word_difficulty(self.current_word) / self.level, self.POWER)
             ban_word(self.current_word, 20)
             self.level += self.SCORE_RATE * delta
+        elif self.trys > 0:
+            self.trys -= 1
         else:
+            self.trys = 3
             delta = math.pow(self.level / calculate_word_difficulty(self.current_word), self.POWER)
             ban_word(self.current_word, 10)
             self.level -= self.SCORE_RATE * delta
