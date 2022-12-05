@@ -73,6 +73,12 @@ class Model(Singleton):
             delta = math.pow(calculate_word_difficulty(self.current_word) / self.level, self.POWER)
             ban_word(self.current_word, 20)
             self.level += self.SCORE_RATE * delta
+            self.machine.learn(self.current_word, correct)
+            self.choose_next_word()
+            print("Level: ", self.level)
+            self.ini_class.setLevel(self.level)
+            return_bundle.add("next_word", self.current_word)
+            return return_bundle
         elif self.trys > 0:
             self.trys -= 1
         else:
@@ -80,9 +86,9 @@ class Model(Singleton):
             delta = math.pow(self.level / calculate_word_difficulty(self.current_word), self.POWER)
             ban_word(self.current_word, 10)
             self.level -= self.SCORE_RATE * delta
-        self.machine.learn(self.current_word, correct)
-        self.choose_next_word()
-        print("Level: ", self.level)
-        self.ini_class.setLevel(self.level)
-        return_bundle.add("next_word", self.current_word)
-        return return_bundle
+            self.machine.learn(self.current_word, correct)
+            self.choose_next_word()
+            print("Level: ", self.level)
+            self.ini_class.setLevel(self.level)
+            return_bundle.add("next_word", self.current_word)
+            return return_bundle
