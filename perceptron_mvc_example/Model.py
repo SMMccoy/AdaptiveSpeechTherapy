@@ -79,6 +79,7 @@ class Model(Singleton):
             self.ini_class.setLevel(self.level)
             return_bundle.add("next_word", self.current_word)
             return return_bundle
+        
         elif self.trys > 0:
             self.trys -= 1
             return return_bundle
